@@ -7,6 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import avatarImg from "../assets/avatar.png";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
@@ -17,8 +18,11 @@ const navigation = [
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
   // console.log(isDropdownOpen);
-  const currentUser = true;
+  const currentUser = false;
 
   return (
     <header className="max-w-screen-2xl mx-auto md:px-20 px-6 py-6">
@@ -55,21 +59,26 @@ const Navbar = () => {
                 </button>
                 {/* show dropdowns */}
 
-                {
-                  isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40">
-                      <ul className="py-2">
-                        {
-                          navigation.map((item)=>(
-                            <li key={item.name} onClick={()=>setIsDropdownOpen(false)}>
-                              <Link to={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100"> {item.name} </Link>
-                            </li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  )
-                }
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-40">
+                    <ul className="py-2">
+                      {navigation.map((item) => (
+                        <li
+                          key={item.name}
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <Link
+                            to={item.href}
+                            className="block px-4 py-2 text-sm hover:bg-gray-100"
+                          >
+                            {" "}
+                            {item.name}{" "}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </>
             ) : (
               <Link to="/login">
@@ -89,7 +98,13 @@ const Navbar = () => {
           >
             {" "}
             <MdOutlineShoppingCart className="size-6" />{" "}
-            <span className="text-sm font-semibold sm:ml-1">0</span>{" "}
+            {cartItems.length > 0 ? (
+              <span className="text-sm font-semibold sm:ml-1">
+                {cartItems.length}
+              </span>
+            ) : (
+              <span className="text-sm font-semibold sm:ml-1">0</span>
+            )}
           </Link>
         </div>
       </nav>

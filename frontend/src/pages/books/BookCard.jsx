@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 import { getImgUrl } from '../../utils/getImgUrl'
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cart/cartSlice";
+import { MdOutlineShoppingCart } from "react-icons/md";
 // import { getImgUrl } from "../../utils/getImgUrl";
 // import Image from '../../../assets/books/book-1.png'
 
 export default function BookCard({ book }) {
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart=(product)=>{
+    dispatch(addToCart(product))
+  }
   // console.log(book);
   return (
     <div className="rounded-lg transition-shadow duration-300">
@@ -39,9 +48,12 @@ export default function BookCard({ book }) {
             </span>
           </p>
 
-          <button className="btn-primary px-6 space-x-1 flex items-center gap-1">
+          <button 
+          onClick={()=>handleAddToCart(book)}
+          className="btn-primary px-1 py-1 space-x-0 flex items-center justify-center ">
             {" "}
-            <span>Add to cart</span>{" "}
+            {/* <MdOutlineShoppingCart className="px-0 py-0 mx-0 my-0"/> */}
+            <span className="text-sm">Add to cart</span>
           </button>
         </div>
       </div>
